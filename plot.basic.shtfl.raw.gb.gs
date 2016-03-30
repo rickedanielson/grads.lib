@@ -1,0 +1,154 @@
+# This script is designed to plot the time series of budget terms.  It
+* can be executed using a command like
+*
+*     grads -bpc "plot.basic.shtfl.raw.gb dj30d        om30d        45 150"
+*     grads -bpc "plot.basic.shtfl.raw.gb gd2000.dj30d gd2000.om30d 45 150"
+*     grads -bpc "plot.basic.shtfl.raw.gb atlmid       atltra       45 -52.5"
+*     grads -bpc "plot.basic.shtfl.raw.gb dj30d        om30d        42 151"
+*     grads -bpc "plot.basic.shtfl.raw.gb gd2000.dj30d gd2000.om30d 42 151"
+*     grads -bpc "plot.basic.shtfl.raw.gb atlmid       atltra       42 -55"
+*
+* where 45 150 is the stationary central position - RD October 2000.
+
+function doit(arg)
+
+"clear"
+"run disp_colours"
+"set grid off"
+
+fila = subwrd(arg,1)
+filb = subwrd(arg,2)
+position = subwrd(arg,3)" "subwrd(arg,4)" "subwrd(arg,3)" "subwrd(arg,4)
+dellat = 20
+#dellon = 50
+dellon = 29
+
+"set clopts 1 3 0.10"
+"set xlopts 1 3 0.10"
+"set ylopts 1 3 0.10"
+
+"sdfopen "fila".heat.flux.nc"
+"sdfopen "fila"-"filb".heat.flux.nc"
+"sdfopen "filb".heat.flux.nc"
+"run gui_view_grid "dellat" "dellon" "position
+
+tima = 1
+#timb = 9
+timb = 1
+
+var.1.0 = "shtflstat"
+var.1.1 = "shtflanom"
+var.2.0 = "shtflstat.2"
+var.2.1 = "shtflanom.2"
+var.3.0 = "shtflstat.3"
+var.3.1 = "shtflanom.3"
+#conin.1 = 20
+#conin.2 = 20
+conin.1 = 5
+conin.2 = 5
+
+a = 1                                                              ;# create the virtual pages
+dely = 0.73
+while (a < 10)
+  y = (9 - a) * (10.7 - dely) / 9 + dely/1.5
+  up = y + dely + 0.5
+  down = y - dely + 0.5
+  vpage.1.a = "0.1  3.2  "down" "up
+  vpage.2.a = "2.7  5.8  "down" "up
+  vpage.3.a = "5.3  8.4  "down" "up
+  a = a + 1
+endwhile
+vpage.1.1  = "2.05  6.45  5.5  10.0"
+vpage.2.1  = "0.0   4.35  1.0   5.5"
+vpage.3.1  = "4.15  8.5   1.0   5.5"
+
+a = tima
+while (a <= timb)
+  "set t "a
+  "set vpage "vpage.1.a
+  "set grads off"
+  if (a = 9)
+    "set xlab on"
+  else
+    "set xlab off"
+  endif
+  "set ylab on"
+  "set xlint 20"
+  "set ylint 10"
+
+  "set clab off"
+  "run disp_stat_95_99 "var.1.0
+  "set cthick 8"
+  "run disp_unshaded_nozero "var.1.1" "conin.1
+  "set cthick 3"
+
+  "run gui_date"
+  date = result
+  "draw title "date
+  a = a + 1
+endwhile
+
+a = tima
+while (a <= timb)
+  "set t "a
+  "set vpage "vpage.2.a
+  "set grads off"
+  if (a = 9)
+    "set xlab on"
+  else
+    "set xlab off"
+  endif
+  "set ylab off"
+  "set xlint 20"
+  "set ylint 10"
+
+  "set clab off"
+  "run disp_stat_95_99 "var.2.0
+  "set cthick 8"
+  "run disp_unshaded_nozero "var.2.1" "conin.2
+  "set cthick 3"
+
+  "run gui_date"
+  date = result
+  "draw title "date
+  a = a + 1
+endwhile
+
+a = tima
+while (a <= timb)
+  "set t "a
+  "set vpage "vpage.3.a
+  "set grads off"
+  if (a = 9)
+    "set xlab on"
+  else
+    "set xlab off"
+  endif
+  "set ylab off"
+  "set xlint 20"
+  "set ylint 10"
+
+  "set clab off"
+  "run disp_stat_95_99 "var.3.0
+  "set cthick 8"
+  "run disp_unshaded_nozero "var.3.1" "conin.1
+  "set cthick 3"
+
+  "run gui_date"
+  date = result
+  "draw title "date
+  a = a + 1
+endwhile
+
+"set vpage off"
+"set strsiz 0.15 0.15"
+"set string 1 c"
+"draw string 4.25 0.20 Sensible Heat Flux ("conin.1" W/m2) Diff ("conin.2" W/m2)"
+"set strsiz 0.1 0.1"
+"set string 1 c"
+"draw string 1.75 10.8 "fila
+"draw string 4.25 10.8 "fila"-"filb
+"draw string 6.85 10.8 "filb
+#"run disp_label_95_99 1 1 1.3 9.5 10"
+"run gui_print plot.basic.shtfl.raw."fila"."filb
+"quit"

@@ -1,0 +1,198 @@
+# set gxout shaded
+# Debug(on)
+# chdir("//d/")
+# MakeLabel(root,"Basic Graphical User Interface")
+
+# define button functions
+
+MakeMenu (file,       "File")
+  MakeMenuItem (opena,     file,  "Open Data.nc",        Load,   "run gui_open_data")
+  MakeMenuItem (openb,     file,  "Open Data+Track.nc",  Load,   "run gui_open_datatrack")
+  MakeMenuItem (openc,     file,  "Open Data.ctl",       Load,   "run gui_open_data_ctl")
+  MakeMenuItem (opend,     file,  "Open Data.xdf",       Load,   "run gui_open_data_xdf")
+  MakeMenuItem (init,      file,  "Reinit",              Cmd,    "reinit")
+  MakeMenuItem (exit,      file,  "Exit",                Cmd,    "quit")
+  MakeMenuItem (junk,      file,  "                  ",  NULL,    NULL)
+  MakeMenuItem (print,     file,  "Print",               Cmd,    "run gui_print")
+  MakeMenuItem (printc,    file,  "Print Colour"         Cmd,    "run gui_print_colour")
+  MakeMenuItem (prompt,    file,  "Command Prompt",      CmdWin,  NULL)
+  MakeMenuItem (colours,   file,  "Shading Blue/Yel",    Cmd,    "run disp_colours colour")
+  MakeMenuItem (nocolours, file,  "Shading Black/W",     Cmd,    "run disp_colours")
+MakeButton (zoom--,   "--",             Cmd,       "run gui_zoom ---")
+MakeButton (zoom-,    "-",              Cmd,       "run gui_zoom --")
+MakeButton (zoom,     "Zoom",           Cmd,       "run gui_zoom")
+MakeButton (zoom+,    "+",              Cmd,       "run gui_zoom ++")
+MakeButton (zoom++,   "++",             Cmd,       "run gui_zoom +++")
+MakeButton (disp,     "Display",        Cmd,       "run gui_disp")
+MakeButton (time--,   "<<",             Cmd,       "run gui_time -4")
+MakeButton (time-,    "<",              Cmd,       "run gui_time -1")
+MakeMenu (time,       "Time")
+  MakeMenuItem (timea, time, "begin", Cmd, "run gui_time 0 begin")
+  MakeMenuItem (timeb, time, " 0.05 ", Cmd, "run gui_time 0.05")
+  MakeMenuItem (timec, time, " 0.10 ", Cmd, "run gui_time 0.10")
+  MakeMenuItem (timed, time, " 0.15 ", Cmd, "run gui_time 0.15")
+  MakeMenuItem (timee, time, " 0.20 ", Cmd, "run gui_time 0.20")
+  MakeMenuItem (timef, time, " 0.25 ", Cmd, "run gui_time 0.25")
+  MakeMenuItem (timeg, time, " 0.30 ", Cmd, "run gui_time 0.30")
+  MakeMenuItem (timeh, time, " 0.35 ", Cmd, "run gui_time 0.35")
+  MakeMenuItem (timei, time, " 0.40 ", Cmd, "run gui_time 0.40")
+  MakeMenuItem (timej, time, " 0.45 ", Cmd, "run gui_time 0.45")
+  MakeMenuItem (timek, time, " half ", Cmd, "run gui_time 0.50")
+  MakeMenuItem (timel, time, " 0.55 ", Cmd, "run gui_time 0.55")
+  MakeMenuItem (timem, time, " 0.60 ", Cmd, "run gui_time 0.60")
+  MakeMenuItem (timen, time, " 0.65 ", Cmd, "run gui_time 0.65")
+  MakeMenuItem (timeo, time, " 0.70 ", Cmd, "run gui_time 0.70")
+  MakeMenuItem (timep, time, " 0.75 ", Cmd, "run gui_time 0.75")
+  MakeMenuItem (timeq, time, " 0.80 ", Cmd, "run gui_time 0.80")
+  MakeMenuItem (timer, time, " 0.85 ", Cmd, "run gui_time 0.85")
+  MakeMenuItem (times, time, " 0.90 ", Cmd, "run gui_time 0.90")
+  MakeMenuItem (timet, time, " 0.95 ", Cmd, "run gui_time 0.95")
+  MakeMenuItem (timeu, time, " end ", Cmd, "run gui_time 0 end")
+MakeButton (time+,    ">",              Cmd,       "run gui_time 1")
+MakeButton (time++,   ">>",             Cmd,       "run gui_time 4")
+MakeButton (profile,  "Profile",        Cmd,       "run gui_profile")
+MakeButton (level--,  "//\\",           Cmd,       "run gui_level 4")
+MakeButton (level-,   "/\",             Cmd,       "run gui_level 1")
+MakeMenu (level,      "Level")
+  MakeMenuItem (levela, level, "  10 hPa", Cmd, "run gui_level   10")
+  MakeMenuItem (levelb, level, "  20 hPa", Cmd, "run gui_level   20")
+  MakeMenuItem (levelc, level, "  30 hPa", Cmd, "run gui_level   30")
+  MakeMenuItem (leveld, level, "  50 hPa", Cmd, "run gui_level   50")
+  MakeMenuItem (levele, level, "  70 hPa", Cmd, "run gui_level   70")
+  MakeMenuItem (levelf, level, " 100 hPa", Cmd, "run gui_level  100")
+  MakeMenuItem (levelg, level, " 150 hPa", Cmd, "run gui_level  150")
+  MakeMenuItem (levelh, level, " 200 hPa", Cmd, "run gui_level  200")
+  MakeMenuItem (leveli, level, " 250 hPa", Cmd, "run gui_level  250")
+  MakeMenuItem (levelj, level, " 300 hPa", Cmd, "run gui_level  300")
+  MakeMenuItem (levelk, level, " 350 hPa", Cmd, "run gui_level  350")
+  MakeMenuItem (levell, level, " 400 hPa", Cmd, "run gui_level  400")
+  MakeMenuItem (levelm, level, " 450 hPa", Cmd, "run gui_level  450")
+  MakeMenuItem (leveln, level, " 500 hPa", Cmd, "run gui_level  500")
+  MakeMenuItem (levelo, level, " 550 hPa", Cmd, "run gui_level  550")
+  MakeMenuItem (levelp, level, " 600 hPa", Cmd, "run gui_level  600")
+  MakeMenuItem (levelq, level, " 650 hPa", Cmd, "run gui_level  650")
+  MakeMenuItem (levelr, level, " 700 hPa", Cmd, "run gui_level  700")
+  MakeMenuItem (levels, level, " 750 hPa", Cmd, "run gui_level  750")
+  MakeMenuItem (levelt, level, " 800 hPa", Cmd, "run gui_level  800")
+  MakeMenuItem (levelu, level, " 850 hPa", Cmd, "run gui_level  850")
+  MakeMenuItem (levelv, level, " 875 hPa", Cmd, "run gui_level  875")
+  MakeMenuItem (levelw, level, " 900 hPa", Cmd, "run gui_level  900")
+  MakeMenuItem (levelx, level, " 925 hPa", Cmd, "run gui_level  925")
+  MakeMenuItem (levely, level, " 950 hPa", Cmd, "run gui_level  950")
+  MakeMenuItem (levelz, level, " 975 hPa", Cmd, "run gui_level  975")
+  MakeMenuItem (levelA, level, "1000 hPa", Cmd, "run gui_level 1000")
+  MakeMenuItem (levelB, level, "1025 hPa", Cmd, "run gui_level 1025")
+MakeButton (level+,   "\/",             Cmd,       "run gui_level -1")
+MakeButton (level++,  "\\//",           Cmd,       "run gui_level -4")
+MakeButton (doit,     "Do it",          Cmd,       "run gui_doit")
+
+# define button relative positions
+
+SetWidgetPos(file,      NO_CARE, NULL, NO_CARE, NULL)
+SetWidgetPos(zoom--,    NO_CARE, NULL, PLACE_RIGHT, file)
+SetWidgetPos(zoom-,     NO_CARE, NULL, PLACE_RIGHT, zoom--)
+SetWidgetPos(zoom,      NO_CARE, NULL, PLACE_RIGHT, zoom-)
+SetWidgetPos(zoom+,     NO_CARE, NULL, PLACE_RIGHT, zoom)
+SetWidgetPos(zoom++,    NO_CARE, NULL, PLACE_RIGHT, zoom+)
+SetWidgetPos(disp,      NO_CARE, NULL, PLACE_RIGHT, zoom++)
+SetWidgetPos(time--,    NO_CARE, NULL, PLACE_RIGHT, disp)
+SetWidgetPos(time-,     NO_CARE, NULL, PLACE_RIGHT, time--)
+SetWidgetPos(time,      NO_CARE, NULL, PLACE_RIGHT, time-)
+SetWidgetPos(time+,     NO_CARE, NULL, PLACE_RIGHT, time)
+SetWidgetPos(time++,    NO_CARE, NULL, PLACE_RIGHT, time+)
+SetWidgetPos(profile,   NO_CARE, NULL, PLACE_RIGHT, time++)
+SetWidgetPos(level--,   NO_CARE, NULL, PLACE_RIGHT, profile)
+SetWidgetPos(level-,    NO_CARE, NULL, PLACE_RIGHT, level--)
+SetWidgetPos(level,     NO_CARE, NULL, PLACE_RIGHT, level-)
+SetWidgetPos(level+,    NO_CARE, NULL, PLACE_RIGHT, level)
+SetWidgetPos(level++,   NO_CARE, NULL, PLACE_RIGHT, level+)
+SetWidgetPos(doit,      NO_CARE, NULL, PLACE_RIGHT, level++)
+
+ShowDisplay()
+
+AllFgColor(black)
+AllBgColor(white)
+
+MainLoop()
+
+# APPENDIX: Currently available callback functions
+#
+#     Browse    Opens a text file, such as a help file, on a separate
+#               window.
+#     Cmd       Executes a generic GrADS command
+#     CmdStr    Like Cmd, but the user is prompted for an additional
+#               string to be appended to the GrADS command.
+#     CmdWin    Invokes a window for GrADS command line interface.
+#               User can click on past commands from a list.
+#     CmdLine   Invokes the standard GrADS command line interface.
+#               When the command line is active the other widgets
+#               are not available (may be fixed in the future).
+#     Display   A generic callback for displaying the current variale
+#               (or expression) set with VarSel. The options are:
+#                  <<    decrements time and executes display
+#                 PLAY   starts animation from current to last time
+#                DISPLAY just executes display
+#                  >>    increments time and  executes display
+#               If the "hold" toggle state is OFF (the default),
+#               the screen is cleared before displaying.
+#     Edit      Like browse, but the user can edit the file. This simple
+#               text editor is integrated with GrADS, providing a very
+#               elementary Integrated Development Enviroment (IDE) for
+#               GrADS scripts. In particular, the script being edited
+#               can be executed by clicling on a button.
+#     FileSel   Pops up a scrollable list and asks the user to selected
+#               a file among the currently opened GrADS files (including
+#               SDFs). The selected file becomes the default.
+#     Load      Pops up a "file finder" widget, and after the user
+#               clicks on a file name it executes a GrADS command
+#               specified as the last argument.
+#     Toggle    Turn internal options ON/OFF. The only internal
+#               option currently supported is "hold". This callback is
+#               usually used with MakeToggle(), see example above.
+#     VarSel    Pops up a scrollable list and asks the user to selected
+#               a variaable from the default file. The user can also
+#               type a generic GrADS expression instead of selecting
+#               a single variable.
+#     NULL      Does not do anything, used for inactive buttons.
+
+#   MakeMenuItem(fsel, file, "File Selection", FileSel, NULL)
+#   MakeMenuItem(browse, file, "View Text File", Browse, NULL)
+#   MakeMenuItem(clear, file, "Clear", Cmd, "clear")
+#   MakeMenuItem(fresh, file, "Refresh", Cmd, " ")
+
+# MakeToggle(hold, "Hold", FALSE, NULL, Toggle, "hold")
+# MakeToggle(hold, "Hold", FALSE, NULL, Toggle, NULL)
+
+# MakeMenu (options, "Options")
+#   MakeMenuItem(shade,  options, "Shaded",      Cmd, "set gxout shaded" )
+#   MakeMenuItem(cont,   options, "Contour",     Cmd, "set gxout contour" )
+#   MakeMenuItem(grfill, options, "Grid Fill",   Cmd, "set gxout grfill" )
+#   MakeMenuItem(grvals, options, "Grid Values", Cmd, "set gxout grid" )
+#   MakeMenuItem(vec,    options, "Vector",      Cmd, "set gxout vector" )
+#   MakeMenuItem(strm,   options, "Streamlines", Cmd, "set gxout stream" )
+#   MakeMenuItem(bar,    options, "Bar Chart",   Cmd, "set gxout bar" )
+#   MakeMenuItem(line,   options, "Line Plot",   Cmd, "set gxout line" )
+#   MakeMenuItem(barb,   options, "Wind Barbs",  Cmd, "set gxout  barb" )
+#   MakeMenuItem(junk,   options, "_______________",  NULL, NULL )
+#   MakeMenuItem(ci,     options, "Contour Interval",  CmdStr, "set cint" )
+#   MakeMenuItem(tit,    options, "Draw Title", CmdStr, "draw title " )
+#   MakeMenuItem(cbar,   options, "Color Bar",  Cmd, "run cbarn" )
+
+# SetWidgetPos(dim, NO_CARE, NULL, PLACE_RIGHT, options)
+# SetWidgetPos(hold, NO_CARE, NULL, PLACE_RIGHT, zoom)
+
+# GetNamedColor(Blue,"LightSkyBlue")
+# AllFgColor(black)
+# AllBgColor(white)
+# SetBgColor(root,white)
+# SetFgColor(root,red)
+# SetFgColor(prompt,yellow)
+# SetBgColor(prompt,red)
+# SetBgColor(prev,red)
+# SetBgColor(play,red)
+# SetBgColor(next,red)
+# SetBgColor(hold,gray)
+# SetBgColor(var,gray)
+# SetBgColor(clear,gray)
+# SetBgColor(rein,gray)
+# SetBgColor(quit,gray)

@@ -1,0 +1,20 @@
+"timemin = 68"
+"timemax = 70"
+"levmin = 1000"
+"levmax = 100"
+"moistmax = 300"
+"latmin = 35"
+"latmax = 87.5"
+"lonmin = 120"
+"lonmax = 300"
+
+say ""
+say "the computational domain and"
+
+"set t 69"
+"set lev 1000"
+"set lat 40 85"
+"set lon 140 280"
+
+say "preferred viewing domain are defined"
+say ""

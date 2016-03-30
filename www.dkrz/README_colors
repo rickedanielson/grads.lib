@@ -1,0 +1,103 @@
+------------------------------------------------------------------------------
+		 /pub/visu/grads/lib/colors/README_colors
+------------------------------------------------------------------------------
+
+
+Palette:
+
+	color		index
+	-----		-----
+	C16a		16 - 29		14 'DKRZ historical' colors
+	C16b		16 - 29		14 'DKRZ historical' colors
+	C16c		16 - 29		14 'DKRZ historical' colors
+	C256-1		16 - 79		1. 64 colors of 256 palette
+	C256-2		16 - 79		2. 64 colors of 256 palette
+	C256-3		16 - 79		3. 64 colors of 256 palette
+	C256-4		16 - 79		4. 64 colors of 256 palette
+	C32a		16 - 45		30 'DKRZ historical' colors
+	C32b		16 - 45		30 'DKRZ historical' colors
+	Crainbow-1	16 - 95		80 rainbow colors - from blue to red
+	Crainbow-2	16 - 95		80 rainbow colors - from red to green
+	Crainbow-3	16 - 95		80 rainbow colors - from grrn to blue
+
+	BYR-02		16 - 80		blue to yellow to red without green
+	BYR-03		16 - 80		blue to yellow to red without green
+	BYG-01		16 - 80		blue to yellow to green
+	GYR-01		16 - 80		green to yellow to red
+	RED-65		16 - 80		dark red to light yellow/red
+	GREEN-65	16 - 80		dark green to light green
+	BLUE-65		16 - 80		dark blue to light blue
+
+	greyscale	index
+	---------	-----
+	PalGrey		16 - 99		84 grey colors
+
+------------------------------------------------------------------------------
+Displaying palette files with GrADS:   showcol.gs GrADS script
+
+			- display colors in a color table like view
+			  and create a PostScript file to print on color
+			  PostScript printer.
+
+			  showcol.gs <palette> [<color numbers>]
+
+			  	palette  	- palette filer` to display
+				color numbers	- number of colors to display
+						  from palette. 
+						  Max. number=80; default=80.
+
+			  --> to display the BLUE-65 palette
+
+			  grads -lc 'run showcol.gs BLUE-65 65'
+
+------------------------------------------------------------------------------
+Using palette files:	- interaktiv, just type after the prompt (ga>)
+
+				run /usr/local/dkrz/grads/COLORS/C16a
+
+			- using a script with the "run" command, just insert
+			  the line 
+
+				'run /usr/local/dkrz/grads/COLORS/C16a'
+
+------------------------------------------------------------------------------
+
+PostScript prints:	Subdirectory PS-files contains the following compressed 
+			PostScript files
+			SUN - compressed with gzip
+
+			C16abc.ps.gz	  C256-123.ps.gz     C32ab.ps.gz
+			Cdefault.ps.gz	  Crainbow-1.ps.gz   Crainbow-2.ps.gz
+			Crainbow-3.ps.gz  PalGrey.ps.gz	     BYR-02.ps.gz
+			BYG-01.ps.gz	  GYR-01.ps.gz	     RED-65.ps.gz
+			GREEN-65.ps.gz	  BLUE-65.ps.gz
+
+			CRAY - compressed with compress
+
+			C16abc.ps.Z	  C256-123.ps.Z      C32ab.ps.Z
+			Cdefault.ps.Z	  Crainbow-1.ps.Z    Crainbow-2.ps.Z
+			Crainbow-3.ps.Z   PalGrey.ps.Z       BYR-02.ps.Z
+			BYG-01.ps.Z	  GYR-01.ps.Z	     RED-65.ps.Z
+			GREEN-65.ps.Z	  BLUE-65.ps.Z
+
+			Uncompress: SUN   /usr/local/dkrz/bin/gzip -d file.gz
+				    CRAY  /usr/bin/uncompress file.Z
+
+------------------------------------------------------------------------------
+
+GIF files:		Subdirectory GIF-files contains the same palette files
+			in GIF format like the subdirectory PS-files.
+
+
+------------------------------------------------------------------------------
+
+General information:	The first 16 color indices (0 - 15) represents the
+			predefined indices within GrADS. It's not possible
+			to overwrite these color indices - that will cause
+			an error!!! 
+			The user can define private color palettes with
+			indices from 16 up to 99 (= 84 colors).
+
+------------------------------------------------------------------------------
+[Last updated Tue Jul 30 11:32 MET 1996]     Karin Meier (karin.meier@dkrz.de)
+------------------------------------------------------------------------------

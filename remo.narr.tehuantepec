@@ -1,0 +1,148 @@
+* This script uses GDS (www.iges.org/grads/gds/) to print an areal average wind speed
+* for the Gulf of Tehuantepec region.  It can be executed using a command such as
+*
+* gradsdods -blc "remo.narr.tehuantepec" > narrdata & ; tail -f narrdata
+*
+* - RD March 2011.
+
+stem = "http://nomads.ncdc.noaa.gov/dods/"                         ;# define data and processing
+file = "NCEP_NARR_DAILY/narr-a_221_uvsfc.subset"
+comm = "1.94384*aave(mag(ugrd30m,vgrd30m),lon=-96.5,lon=-94,lat=13.5,lat=15.5)"
+tims = 2950
+
+a = 0
+if (a = 1)
+lims = "0:0,0:0,0:0,0z1jun2003:21z10jun2004"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2004:21z10jun2005"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2005:21z10jun2006"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2006:21z10jun2007"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2007:21z10jun2008"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2008:21z10jun2009"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+
+lims = "0:0,0:0,0:0,0z1jun2009:21z10jun2010"                       ;# loop through a year and output 6-hourly
+a = "Err" ; while (a = "Err")
+  "sdfopen "stem"_expr_{"file"}{"comm"}{"lims"}"
+  line = sublin(result,2) ; a = substr(line,1,3)
+endwhile
+"set t 1 "tims ; "define var = result"
+a = 1 ; while (a <= tims)
+  "set t "a ; "run gui_date_simple" ; date = result
+  "d var" ; say date"   "subwrd(result,4) ; a = a + 2
+endwhile
+"reinit"
+endif
+
+month.01 = "jan" ; month.02 = "feb" ; month.03 = "mar" ; month.04 = "apr" ; month.05 = "may" ; month.06 = "jun"
+month.07 = "jul" ; month.08 = "aug" ; month.09 = "sep" ; month.10 = "oct" ; month.11 = "nov" ; month.12 = "dec"
+
+tims = 8
+xyzzy = "xyzzy.out"
+curdate = "2011-03-01-00"
+b = 1 ; while (b <= 62)
+  yr = substr(curdate,1,4) ; mo = substr(curdate,6,2) ; dy = substr(curdate,9,2) ; curtime = yr""mo""dy
+  if (curtime < 20100910)
+    file = "NCEP_NARR_DAILY/"yr""mo"/"yr""mo""dy"/narr-a_221_"yr""mo""dy"_0000_000"
+  else
+    file = "NCEP_NARR_DAILY/"yr""mo"/"yr""mo""dy"/narr-a_221_"yr""mo""dy"_hh00_000"
+  endif
+  fila = "NCEP_NARR_DAILY/"yr""mo"/"yr""mo""dy"/narr-a_221_"yr""mo""dy"_0000_000"
+  filb = "NCEP_NARR_DAILY/"yr""mo"/"yr""mo""dy"/narr-a_221_"yr""mo""dy"_hh00_000"
+
+  flag = 0
+  lims = "0:0,0:0,0:0,0z"dy""month.mo""yr":21z"dy""month.mo""yr
+  a = "Err" ; while (a = "Err")
+    say "sdfopen "stem"_expr_{"fila"}{"comm"}{"lims"}"
+        "sdfopen "stem"_expr_{"fila"}{"comm"}{"lims"}"
+    line = sublin(result,2) ; a = substr(line,1,3)
+    if (a = "Err")
+      say "sdfopen "stem"_expr_{"filb"}{"comm"}{"lims"}"
+          "sdfopen "stem"_expr_{"filb"}{"comm"}{"lims"}"
+      line = sublin(result,2) ; a = substr(line,1,3)
+    endif
+  endwhile
+if (a != "Err")
+  "set t 1 "tims ; "define var = result"
+  a = 1 ; while (a <= tims)
+    "set t "a ; "run gui_date_simple" ; date = result
+    "d var" ; val = subwrd(result,4)
+    if (val = -9.99e+08) ; flag = 1 ; endif
+    say date"   "val ; a = a + 2
+  endwhile
+endif
+  "reinit"
+
+  if (flag = 1)
+    say "ERROR : found missing value among results"
+  endif
+# else
+    "!date.extend "curdate" 24 1 > "xyzzy ; filestat = read(xyzzy) ; filestat = read(xyzzy)
+    line = sublin(filestat,2) ; curdate = subwrd(line,1) ; filestat = close(xyzzy) ; "!rm "xyzzy
+    b = b + 1
+# endif
+endwhile
+"quit"

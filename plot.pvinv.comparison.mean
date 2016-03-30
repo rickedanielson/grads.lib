@@ -1,0 +1,66 @@
+#!/usr/bin/perl -w
+
+if (scalar(@ARGV) != 1) {
+  print "Usage: $0 datelist\n";
+    die "       where datelist exists in the current directory\n";
+}
+
+$fila = $ARGV[0] . ".mean.input.mean.nc";
+$filb = $ARGV[0] . ".mean.output.mean.nc";
+$filc = $ARGV[0] . ".totl.mean.nc";
+if (-e $fila & -e $filb & -e $filc) {
+#  $command = "grads -bpc \"plot.pvinv.comparison.air $fila $filc\"\n";
+#  print $command;
+#  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.air $filb $filc\"\n";
+  print $command;
+  $result = mysystem($command);
+#  $command = "grads -bpc \"plot.pvinv.comparison.hght $fila $filc\"\n";
+#  print $command;
+#  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.hght $filb $filc\"\n";
+  print $command;
+  $result = mysystem($command);
+}
+
+$fila = $ARGV[0] . ".mean.input.potential.vorticity.mean.nc";
+$filb = $ARGV[0] . ".mean.output.potential.vorticity.mean.nc";
+$filc = $ARGV[0] . ".totl.potential.vorticity.mean.nc";
+if (-e $fila & -e $filb & -e $filc) {
+  $command = "grads -bpc \"plot.pvinv.comparison.pvtheta.diff $fila $filc\"\n";
+  print $command;
+  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.pvtheta.same $filb $filc\"\n";
+  print $command;
+  $result = mysystem($command);
+}
+
+sub mysystem {                                                                # system call (Perl book page 230)
+  my $com = shift(@_);
+  my $result = 0xffff & system($com);
+  my $retval = "\n";
+
+  if ($result == 0) {
+    return;
+  }
+
+  else {
+    $retval .= " *** system($com) ";
+    if ($result == 0xff00) {
+      $retval .= "failed\n";
+    }
+    elsif (($result & 0xff) == 0) {
+      $result >>= 8;
+      $retval .= "ran with exit status $result\n";
+    }
+    else {
+      $retval .= "ran with ";
+      if ($result & 0x80) {
+        $result &= ~0x80;
+        $retval .= "coredump from ";
+      }
+      $retval .= "signal $result\n";
+    }
+    return $retval;
+  }
+}

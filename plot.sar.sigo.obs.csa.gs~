@@ -1,0 +1,249 @@
+* This script is designed to plot a SAR backscatter cross section
+* with observations overlayed.  It can be executed using a command like
+*
+*     grads -bpc "plot.sar.sigo.obs.csa 2005-05-09_49647_01.06400.sar.nc"
+*     grads -bpc "plot.sar.sigo.obs.csa 2005-05-09_49647_01.06400.sar.nc.incid"
+*
+* - RD April 2004.
+
+function plot(sarfile)
+
+firstlat = 50.0
+dellat   = 0.001
+firstlon = 280.0
+dellon   = 0.001
+showprecip = 0
+showborder = 0
+showincid  = 1
+showcolbar = 1
+
+"clear"
+stem     = substr(sarfile,1,25)
+resol    = substr(sarfile,21,5)
+obsfile  = substr(sarfile,1,25)".ctl"
+if (resol = "00012") ; reduce = 1 ; skipper = 64 ; border = 12 ; endif
+if (resol = "00025") ; reduce = 1 ; skipper = 32 ; border = 10 ; endif
+if (resol = "00050") ; reduce = 1 ; skipper = 16 ; border =  8 ; endif
+if (resol = "00100") ; reduce = 1 ; skipper =  8 ; border =  6 ; endif
+if (resol = "00200") ; reduce = 1 ; skipper =  4 ; border =  4 ; endif
+if (resol = "00400") ; reduce = 1 ; skipper = 32 ; border = 10 ; endif
+if (resol = "00800") ; reduce = 1 ; skipper = 32 ; border = 10 ; endif
+if (resol = "01600") ; reduce = 2 ; skipper = 16 ; border =  8 ; endif
+if (resol = "03200") ; reduce = 3 ; skipper =  8 ; border =  6 ; endif
+if (resol = "06400") ; reduce = 4 ; skipper =  4 ; border =  4 ; endif
+if (resol = "12800") ; reduce = 5 ; skipper =  2 ; border =  2 ; endif
+
+fila = stem".hdr"                                                  ;# read the header info
+say "reading "fila
+filestat = read(fila)
+line = sublin(filestat,2)
+word = subwrd(line,2)
+product = substr(word,1,19)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+direction = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+beam = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+date    = subwrd(line,2)
+timx    = subwrd(line,3)
+time    = substr(timx,1,5)
+maxdate = subwrd(line,4)
+say date" "time
+say maxdate
+
+filestat = read(fila)                                              ;# get the acquisition corners
+line = sublin(filestat,2)                                          ;# and the initial view
+ullat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+ullon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+urlat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+urlon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lllat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lllon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lrlat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lrlon = subwrd(line,2)
+
+filestat = read(fila)                                              ;# and define a view with
+line = sublin(filestat,2)                                          ;# a border to allow wind
+filestat = read(fila)                                              ;# barbs to show up
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+numazi = subwrd(line,2)
+##  lata = firstlat - (numazi - 1 + border) * dellat
+##  latb = firstlat + border * dellat
+#filestat = read(fila)
+#line = sublin(filestat,2)
+#numrng = subwrd(line,2)
+##  lona = firstlon - border * dellon
+##  lonb = firstlon + (numrng - 1 + border) * dellon
+#fileclose = close(fila)
+##  midlat = (lata + latb) / 2.0
+##  midlon = (lona + lonb) / 2.0
+#midlat = 49.7
+#midlon = 280.355
+#if (midlon < 0) ; midlon = midlon + 360.0 ; endif                 ;# then set the display script
+#say "midlat = "midlat" midlon = "midlon
+lata = firstlat - (numazi - 1 + border) * dellat
+latb = firstlat + border * dellat
+filestat = read(fila)
+line = sublin(filestat,2)
+numrng = subwrd(line,2)
+lona = firstlon - border * dellon
+lonb = firstlon + (numrng - 1 + border) * dellon
+fileclose = close(fila)
+midlat = (lata + latb) / 2.0
+midlon = (lona + lonb) / 2.0
+if (midlon < 0) ; midlon = midlon + 360.0 ; endif                  ;# then set the display script
+say "midlat = "midlat" midlon = "midlon
+
+
+"sdfopen "sarfile
+"open    "obsfile
+if (showborder = 1)
+  "set lat "lata" "latb
+  "set lon "lona" "lonb
+endif
+"define cenlat = "midlat
+"define cenlon = "midlon
+
+"clear"
+"set grads off"
+"set grid off"
+  "run disp_colours colour"
+"set xlab off"
+"set ylab off"
+"set digsiz 0.09"
+"set gxout grfill"
+if (showprecip = 1)
+  "set black -1e-9 1e-9"
+  if (showincid = 1)
+    "set grads off" ; "run disp_shaded_sar_incid const(sigo,0,-u)+const(mask,0,-u)"
+  else
+    "set grads off" ; "run disp_shaded_sar       const(sigo,0,-u)+const(mask,0,-u)"
+  endif
+else
+  if (showincid = 1)
+#    "set grads off" ; "run disp_shaded_sar_incid sigo"
+  else
+    "set grads off" ; "run disp_shaded_sar       sigo"
+  endif
+endif
+if (showcolbar = 1)
+  "q gxinfo"
+  say result
+  rec = sublin(result,2)
+  pagex = subwrd(rec,4)
+  pagey = subwrd(rec,6)
+  rec = sublin(result,4)
+  barny = subwrd(rec,4) - 0.35
+#  "set grads off" ; "run gui_cbarn 1.0 0 4.25 "barny
+endif
+
+"q gxinfo"
+line = sublin(result,2)
+xlorig = 0
+xrorig = subwrd(line,4)
+yborig = 0
+ytorig = subwrd(line,6)
+line = sublin(result,3)
+xl = subwrd(line,4)
+xr = subwrd(line,6)
+line = sublin(result,4)
+yb = subwrd(line,4)
+yt = subwrd(line,6)
+
+"set gxout barb"
+"set grads off" ; "d uwnd;skip(vwnd,4)"
+"set gxout contour"
+"set clevs 0.5"
+"set clab off"
+"set cthick 20"
+"set ccolor 1"
+"set grads off" ; "d land"
+"set ccolor 1"
+"set cthick 15"
+
+"set rgb    60    0  255  150"
+"set rgb    61    0  255  200"
+"set rgb    62    0  255  255"
+
+stem = substr(sarfile,1,25)                                        ;# add the circular buoy
+filb = stem".obs"                                                  ;# regions of validity
+say "reading "filb                                                 ;# and plot the buoys
+countb = 0
+filestat = read(filb)
+while (sublin(filestat,1) = 0)
+  line = sublin(filestat,2)
+  radius = subwrd(line,27)
+  obslat = subwrd(line,28)
+  obslon = subwrd(line,29)
+#  if (countb = 0) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1 61" ; endif
+#  if (countb = 1) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1 60" ; endif
+#  if (countb = 2) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1 61" ; endif
+#  if (countb = 3) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1 62" ; endif
+  if (countb = 0) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1  5" ; endif
+  if (countb = 1) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1  2" ; endif
+  if (countb = 2) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1  5" ; endif
+  if (countb = 3) ; "set grads off" ; "run disp_circle_cart "obslat" "obslon" "radius" 1  3" ; endif
+  countb = countb + 1
+  filestat = read(filb)
+endwhile
+say countb" obs were found"
+fileclose = close(filb)
+"set gxout model"
+"set mdlopts dig3"
+"set ccolor 1"
+"d uwnd.2;vwnd.2"
+
+#"draw title 25-m "beam" "date" "time" UTC"
+#y = pagey + 0.1
+#"set string 1 c 5"
+#pagex = pagex / 2
+#"draw string "pagex" 0.3 "time
+
+#"run gui_header date"
+"set strsiz 0.08 0.08"
+"set strsiz 0.1 0.1"
+#"run disp_sar_latlon"
+
+"run gui_print_colour plot."stem
+say "printim plot."stem".gif gif white x850 y1100"
+    "printim plot."stem".gif gif white x850 y1100"
+"quit"

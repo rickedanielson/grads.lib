@@ -1,0 +1,42 @@
+6/96  page.doc                                   w. ebisuzaki
+
+
+This script can be used to make multiple plots on one page.
+
+usage:
+
+  run page top           plot on top half of screen
+  run page bottom        plot on bottom half of screen
+  run page left          plot on left half of screen
+  run page right         plot on right half of screen
+
+  run page q1            plot on quadrent 1
+  run page q2            plot on quadrent 2
+  run page q3            plot on quadrent 3
+  run page q4            plot on quadrent 4
+
+  run page xy XY         (x,y,X,Y) are single digits
+                         xy = location, XY = size
+                         only 1 blank between xy and XY
+quadrents:
+
+   -----------
+   | q1 | q2 |
+   -----------
+   | q3 | q4 |
+   -----------
+
+
+Matrix notation:
+   xy is the location of the page
+   XY is number of subdivisions
+
+   -----------
+   | 13 | 23 |       
+   -----------
+   | 12 | 22 |       xy values for XY=23
+   -----------
+   | 11 | 21 |
+   -----------
+
+

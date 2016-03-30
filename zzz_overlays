@@ -1,0 +1,151 @@
+Mark Sponsler msponsler at comcast.net
+Fri Nov 5 11:33:07 EDT 2010
+
+    * Previous message: [gradsusr] grib1 with lats4d
+    * Next message: [gradsusr] Fwd: Command produces a PNG image with transparent color 0 and a background image NE.png
+    * Messages sorted by: [ date ] [ thread ] [ subject ] [ author ]
+
+Hi Jeff, 
+
+I do this all the time. It's really pretty simple once you get it figured out once. It works with even early revs of Grads, li ke back to 1.9. I don't use imagemagik for basic displays, but you can to  produce some  fancier effects.  Here's the basics:   
+
+
+
+So for something like precip here's what I do: 
+
+
+
+First just plot the basic precipitation 
+
+
+
+  'set mpdset worldmap' 
+  'set mpdraw on' 
+  'set map 0 1 1' 
+
+
+
+   'set clevs 0 .01 0.1 0.2 0.4 0.6 0.8 1.0 1.3 1.7 2.0 2.3 2.7 3.0 3.3 3.7 4.0 4.5 5.0' 
+   'set ccols 0  0   40  70  71  72  73  88  28  29  78  30  31  80  81  82  83  84  85  85' 
+   'd apcpsfc' 
+
+
+
+Then print your image to a png 
+
+
+
+   'printim c:/grib/dods_eta_output/test.png png -b c:/grib//background/imagname.png -t 0 x700 y541 white' 
+   'clear' 
+
+
+
+This produces the image 'test.png'  
+
+
+
+Then finis h your graphic by adding contours, maybe another shaded overlay  and other stuff : 
+
+**Low Pressure** 
+
+   'set gxout contour' 
+   'set cint 2' 
+   'set ccolor 80' 
+   'set clab on' 
+   'set cthick 5' 
+   'set clskip 2' 
+   'set clopts 80 2 0.09' 
+   'set cmax 1011' 
+   'd prmslmsl/100' 
+** High Pressure  ** 
+   'set gxout contour' 
+   'set cint 2' 
+   'set ccolor 4' 
+   'set clab on' 
+   'set clskip 1' 
+   'set cthick 5' 
+   'set cmin 1011.1' 
+   'set clopts 70 2 0.09' 
+   'd prmslmsl/100' 
+
+
+
+   'draw map' 
+
+
+
+Then print your image again. 
+
+
+
+   'printim 'c/grib/dods_eta_output/precip/'location_name'_'time' hr.png png -b c:/grib/dods_eta_output/test.png -t 0 x700 y541 white' 
+   'clear' 
+
+I've included the background image (nwcoast.png) , the interim image (test.png) and  the final result (nwcoast_84hr.png).  
+
+
+
+Note - When  using foreground images things get a little bit trickier in that your foreground image needs to first be manipulated in an image editing program to set some portion of it to be transparent (so the weather data will bleed through).   
+
+  
+Thanks, 
+Mark 
+
+
+
+
+   'printim 'c/grib/dods_eta_output/precip/'location_name'_'time' hr.png png -b c:/grib/dods_eta_output/test.png -t 0 x700 y541 white' 
+   'clear' 
+
+I've included the background image (nwcoast.png) , the interim image (test.png) and  the final result (nwcoast_84hr.png).  
+
+
+
+Note - When  using foreground images things get a little bit trickier in that your foreground image needs to first be manipulated in an image editing program to set some portion of it to be transparent (so the weather data will bleed through).   
+
+  
+Thanks, 
+Mark 
+
+----- Original Message ----- 
+From: "Jeff Chabot" <jsc219 at gmail.com> 
+To: gradsusr at gradsusr.org 
+Sent: Thursday, November 4, 2010 5:48:56 PM 
+Subject: [gradsusr] Command produces a PNG image with transparent color 0 and a background image NE.png 
+
+Hello GrADS Users, 
+
+I am trying to get a background image behind my precip/ptype products in GrADS and I am having absolutely no luck. 
+
+GrADS versions that I have tried: 
+
+Grid Analysis and Display System (GrADS) Version 2.0.a9 
+Grid Analysis and Display System (GrADS) Version 2.0.a7 
+
+Error that I receive: 
+
+PRINTIM error: background image open error 
+
+printim example that I am using: 
+
+printim precip_NE_1.png png x570 y435 -b NE.png -t 0 
+
+I am using the full path for the output image and background image, I just removed it from the above command. 
+
+This is the png image that I would like to use (or it will look something like this): 
+
+http://jeffsweatherservice.com/images/NE.png 
+
+The above image would be a background to an image like: 
+
+http://jeffsweatherservice.com/grads/nam/precip_NE_2.png 
+
+Does anyone know how to make this work?  Or does anyone have another way that I could get a green/brown basemap with blue water to replace the plan white background?  I have the basemap stencil working on temperature products, but that will not work well for precip/ptype products. 
+
+Any help/insight here would be greatly appreciated. 
+
+Sincerely, 
+
+
+Jeff Chabot 
+jsc219 at gamil.com

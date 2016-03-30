@@ -1,0 +1,93 @@
+* This script is designed to plot a SAR backscatter cross section
+* with observations overlayed.  It can be executed using a command like
+*
+*     grads -blc "plot.sar.all all.hdr all.06400.col.gemdir.common"
+*
+* - RD April 2004.
+
+function plot(args)
+
+"sdfopen /home/rdanielson/data/coads/climatology/clim.month.sst.ltm.nc"
+#"set mproj scaled"
+vpg.0 = "0.0  5.0 0 8.5"
+vpg.1 = "6.0 11.0 0 8.5"
+pos.0 = "48 -130 48 -130"
+pos.1 = "45 -60  45  -60"
+dellat = 10
+dellon = 15
+
+a = 0
+while (a < 2)
+  "set vpage "vpg.a
+  "set grads off"
+  "set grid off"
+  "set map 15 1"
+  "set mpdset mres"
+#  "set mpt * off" ; "set mpt 0 -1" ;# "set mpt 1 -1"
+  "set digsiz 0.09"
+  "run gui_view_grid "dellat" "dellon" "pos.a
+  "set cthick 15"
+  "set clab off"
+  "set clevs 100"
+  "set ccolor 0"
+  "d sst-sst"
+
+  file = subwrd(args,1)
+  b = 0
+  while (b < 485)
+    filestat = read(file)
+    fila = sublin(filestat,2)
+#    say "reading "fila
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    ullat = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    ullon = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    urlat = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    urlon = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    lllat = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    lllon = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    lrlat = subwrd(line,2)
+    filestat = read(fila)
+    line = sublin(filestat,2)
+    lrlon = subwrd(line,2)
+    filestat = close(fila)
+
+    "set line 1 1 5"
+    if ((a = 0 & ullon < -75) | (a = 1 & ullon > -75))
+      "run disp_box_points_fill "ullat" "ullon" "urlat" "urlon" "lllat" "lllon" "lrlat" "lrlon
+    endif
+    b = b + 1
+  endwhile
+
+#  "run basemap L 15 15 M"
+
+  filestat = close(file)
+  a = a + 1
+endwhile
+
+"run gui_print plot.sar.all"
+#say "printim plot.sar.all.gif gif white x1100 y850"
+#    "printim plot.sar.all.gif gif white x1100 y850"
+"quit"

@@ -1,0 +1,99 @@
+* This script is designed to plot a SAR backscatter cross section
+* with observations overlayed.  It can be executed using a command like
+*
+*     grads -bpc "plot.sar.sigo 2005-04-14_49290_01.00025.sar.nc"
+*
+* - RD April 2004.
+
+function plot(arg)
+
+stem     = substr(arg,1,25)
+stemstem = substr(arg,1,19)
+resol    = substr(arg,24,2)
+obsfile  = substr(arg,1,25)".ctl"
+estfile  = substr(arg,1,25)".est.ctl"
+
+"sdfopen "arg
+#"open "obsfile
+#"open "estfile
+
+"clear"
+"set grads off"
+"set grid off"
+"set xlab off"
+"set ylab off"
+"set digsiz 0.09"
+"set gxout grfill"
+#"set grads off" ; "d sigo"
+#"d const(sigo,0,-u)+const(mask,0,-u)"
+#"set grads off" ; "run disp_shaded_sar sigo"
+"set grads off" ; "run disp_shaded_sar const(sigo,0,-u)+const(mask,0,-u)"
+"set grads off" ; "run gui_cbarn 1.0 0 4.25 1.00"
+"set gxout barb"
+#"set grads off" ; "d uwnd;skip(vwnd,8)"
+"set gxout contour"
+"set clevs 0.5"
+"set clab off"
+"set cthick 20"
+#"set grads off" ; "d land"
+"set cthick 5"
+"set gxout model"
+"set mdlopts dig3"
+"set digsiz 0.22"
+"set ccolor 1"
+"set cthick 15"
+#"set grads off" ; "d uwnd.2;vwnd.2"
+"set ccolor 6"
+#"d uwnd.3;vwnd.3"
+"set gxout contour"
+
+fila = stem".hdr"
+say "reading "fila
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+direction = subwrd(line,2)
+
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+beam = subwrd(line,2)
+
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+word = subwrd(line,4)
+date = substr(word,1,10)
+word = subwrd(line,3)
+time = substr(word,1,5)
+
+"draw title "resol"-m "beam" "date" "time" UTC"
+"q gxinfo"
+rec = sublin(result,2)
+pagex = subwrd(rec,4)
+pagey = subwrd(rec,6)
+y = pagey + 0.1
+"set string 1 c 5"
+pagex = pagex / 2
+#"draw string "pagex" 0.3 "time
+
+#"run gui_header date"
+"set strsiz 0.08 0.08"
+"set strsiz 0.1 0.1"
+#"run disp_sar_latlon"
+
+"run gui_print plot."stem
+say "printim plot."stem".gif gif white x850 y1100"
+    "printim plot."stem".gif gif white x850 y1100"
+"quit"

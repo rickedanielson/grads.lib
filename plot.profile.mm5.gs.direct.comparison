@@ -1,0 +1,161 @@
+# This script is designed to plot some kind of profile.  It
+* can be executed using a command like
+*
+*     grads -bpc "plot.profile.mm5 65 215 25 215"
+*
+* where the arguments define the position of the profile - RD February 2001.
+
+function prof(args)
+
+#fila = "MMOUT_DOMAIN1.2001-02-21.pegasus.ctl"
+#filb = "MMOUT_DOMAIN1.2001-02-22.pegasus.ctl"
+fila = "MMOUT_DOMAIN1.2001-02-18.echo.ctl"
+filb = "MMOUT_DOMAIN1.2001-02-19.echo.ctl"
+
+"open "fila
+"set t 1"
+"set lev 300"
+"set lat 22.5 67.5"
+"set lon 145 235"
+
+* write the main and 3D display scripts
+
+filenama = '/home/rdanielson/prog/graphics.grads/lib/gui_disp.gs'
+filenamb = '/home/rdanielson/prog/graphics.grads/lib/gui_dispp.gs'
+outline = ''
+filestat = write(filenama,outline)
+messaga = sublin(filestat,1)
+filestat = write(filenamb,outline)
+messagb = sublin(filestat,1)
+if (messaga != 0 | messagb != 0)
+  say 'either error 'messaga' in opening and writing to 'filenama
+  say '    or error 'messagb' in opening and writing to 'filenamb
+endif
+
+outline = '"set grads off"'
+filewrite = write(filenama,outline)
+outline = '"set grid off"'
+filewrite = write(filenama,outline)
+outline = '"set cint 6"'
+filewrite = write(filenama,outline)
+outline = '"d pslv"'
+filewrite = write(filenama,outline)
+outline = '"set cthick 8"'
+filewrite = write(filenama,outline)
+outline = '"set cint 200"'
+filewrite = write(filenama,outline)
+outline = '"d h"'
+filewrite = write(filenama,outline)
+outline = '"set cthick 4"'
+filewrite = write(filenama,outline)
+outline = '"run gui_header date"'
+filewrite = write(filenama,outline)
+fileclose = close(filenama)
+
+outline = '"set grads off"'
+filewrite = write(filenamb,outline)
+outline = '"set grid off"'
+filewrite = write(filenamb,outline)
+outline = '"set zlog on"'
+filewrite = write(filenamb,outline)
+outline = '"set cthick 8"'
+filewrite = write(filenamb,outline)
+outline = '"set cint 2"'
+filewrite = write(filenamb,outline)
+outline = '"d pv"'
+filewrite = write(filenamb,outline)
+outline = '"set cthick 4"'
+filewrite = write(filenamb,outline)
+outline = '"set cint 10"'
+filewrite = write(filenamb,outline)
+outline = '"d mag(u,v)"'
+filewrite = write(filenamb,outline)
+outline = '"run gui_headerp date"'
+filewrite = write(filenamb,outline)
+fileclose = close(filenamb)
+
+"run gui_profilep "args
+"close 1"
+
+"open "filb
+"set t 1"
+"set lev 300"
+"set lat 22.5 67.5"
+"set lon 145 235"
+
+* re-write the main and 3D display scripts for the second file
+
+outline = ''
+filestat = write(filenama,outline)
+messaga = sublin(filestat,1)
+filestat = write(filenamb,outline)
+messagb = sublin(filestat,1)
+if (messaga != 0 | messagb != 0)
+  say 'either error 'messaga' in opening and writing to 'filenama
+  say '    or error 'messagb' in opening and writing to 'filenamb
+endif
+
+outline = '"set grads off"'
+filewrite = write(filenama,outline)
+outline = '"set grid off"'
+filewrite = write(filenama,outline)
+outline = '"set cstyle 3"'
+filewrite = write(filenama,outline)
+outline = '"set cint 6"'
+filewrite = write(filenama,outline)
+outline = '"d pslv"'
+filewrite = write(filenama,outline)
+outline = '"set cstyle 3"'
+filewrite = write(filenama,outline)
+outline = '"set cthick 8"'
+filewrite = write(filenama,outline)
+outline = '"set cint 200"'
+filewrite = write(filenama,outline)
+outline = '"d h"'
+filewrite = write(filenama,outline)
+outline = '"set cthick 4"'
+filewrite = write(filenama,outline)
+outline = '"run gui_header date"'
+filewrite = write(filenama,outline)
+fileclose = close(filenama)
+
+outline = '"set grads off"'
+filewrite = write(filenamb,outline)
+outline = '"set grid off"'
+filewrite = write(filenamb,outline)
+outline = '"set zlog on"'
+filewrite = write(filenamb,outline)
+outline = '"set cstyle 3"'
+filewrite = write(filenamb,outline)
+outline = '"set cthick 8"'
+filewrite = write(filenamb,outline)
+outline = '"set cint 2"'
+filewrite = write(filenamb,outline)
+outline = '"d pv"'
+filewrite = write(filenamb,outline)
+outline = '"set cstyle 3"'
+filewrite = write(filenamb,outline)
+outline = '"set cthick 4"'
+filewrite = write(filenamb,outline)
+outline = '"set cint 10"'
+filewrite = write(filenamb,outline)
+outline = '"d mag(u,v)"'
+filewrite = write(filenamb,outline)
+outline = '"run gui_headerp date"'
+filewrite = write(filenamb,outline)
+fileclose = close(filenamb)
+
+"run gui_profilep "args
+"close 1"
+
+"set string 1 bl 4"
+"set strsiz 0.1 0.1"
+"set line 1 1"
+"draw line 2.5 10.8 3.0 10.8"
+"draw string 3.25 10.8 "fila
+"set line 1 3"
+"draw line 2.5 10.6 3.0 10.6"
+"draw string 3.25 10.6 "filb
+
+"run gui_print plot.profile."fila"."filb
+"quit"

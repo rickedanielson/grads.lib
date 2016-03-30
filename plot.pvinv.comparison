@@ -1,0 +1,75 @@
+#!/usr/bin/perl -w
+
+if (scalar(@ARGV) != 1) {
+  print "Usage: $0 datelist\n";
+    die "       where datelist exists in the current directory\n";
+}
+
+$fila = $ARGV[0] . ".res.nc";
+$filb = $ARGV[0] . ".bal.nc";
+#$filb = $ARGV[0] . ".nc";
+if (-e $fila & -e $filb) {
+  $command = "grads -bpc \"plot.pvinv.comparison.air $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.hght $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.uwnd $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+  $command = "grads -bpc \"plot.pvinv.comparison.vwnd $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+  $command = "grads -blc \"plot.pvinv.comparison.slp $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+}
+
+$fila = $ARGV[0] . ".res.integrals.nc";
+$filb = $ARGV[0] . ".bal.integrals.nc";
+#$filb = $ARGV[0] . ".integrals.nc";
+if (-e $fila & -e $filb) {
+  $command = "grads -bpc \"plot.pvinv.comparison.strm $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+}
+
+$fila = $ARGV[0] . ".res.potential.vorticity.nc";
+$filb = $ARGV[0] . ".bal.potential.vorticity.nc";
+#$filb = $ARGV[0] . ".potential.vorticity.nc";
+if (-e $fila & -e $filb) {
+  $command = "grads -bpc \"plot.pvinv.comparison.pv.same $fila $filb\"\n";
+  print $command;
+  $result = mysystem($command);
+}
+
+sub mysystem {                                                                # system call (Perl book page 230)
+  my $com = shift(@_);
+  my $result = 0xffff & system($com);
+  my $retval = "\n";
+
+  if ($result == 0) {
+    return;
+  }
+
+  else {
+    $retval .= " *** system($com) ";
+    if ($result == 0xff00) {
+      $retval .= "failed\n";
+    }
+    elsif (($result & 0xff) == 0) {
+      $result >>= 8;
+      $retval .= "ran with exit status $result\n";
+    }
+    else {
+      $retval .= "ran with ";
+      if ($result & 0x80) {
+        $result &= ~0x80;
+        $retval .= "coredump from ";
+      }
+      $retval .= "signal $result\n";
+    }
+    return $retval;
+  }
+}

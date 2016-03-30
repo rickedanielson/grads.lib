@@ -1,0 +1,225 @@
+* This script is designed to plot a SAR backscatter cross section
+* with observations overlayed.  It can be executed using a command like
+*
+*     grads -blc "plot.sar.sigo.wind 21Mar04_43737_01.sar.nc.est"
+*
+* - RD April 2004.
+
+function plot(args)
+
+file = subwrd(args,1)
+a = 1                                         ;* isolate the the header file name
+b = 1                                         ;* and read the ancillary data
+ret = substr(args,a,1)
+while (ret != "")
+  if (b = 1 & ret = ".")
+    b = a
+  endif
+  a = a + 1
+  ret = substr(args,a,1)
+endwhile
+b = b - 1
+stem = substr(args,1,b)
+
+fila = stem"_sig0.hdr"
+say "reading "fila
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+direction = subwrd(line,2)
+
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+beam = subwrd(line,2)
+
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+date = subwrd(line,2)
+time = subwrd(line,3)
+year = substr(date,8,4)
+mona = substr(date,4,3)
+day  = substr(date,1,2)
+hour = substr(time,1,2)
+if (mona = "JAN") ; monb = "01" ; endif
+if (mona = "FEB") ; monb = "02" ; endif
+if (mona = "MAR") ; monb = "03" ; endif
+if (mona = "APR") ; monb = "04" ; endif
+if (mona = "MAY") ; monb = "05" ; endif
+if (mona = "JUN") ; monb = "06" ; endif
+if (mona = "JUL") ; monb = "07" ; endif
+if (mona = "AUG") ; monb = "08" ; endif
+if (mona = "SEP") ; monb = "09" ; endif
+if (mona = "OCT") ; monb = "10" ; endif
+if (mona = "NOV") ; monb = "11" ; endif
+if (mona = "DEC") ; monb = "12" ; endif
+if (hour = 9 | hour = 10 | hour = 11)
+  maxdate = year"-"monb"-"day"-06"
+else
+  maxdate = year"-"monb"-"day"-18"
+endif
+say date" "time
+say maxdate
+
+filestat = read(fila)
+line = sublin(filestat,2)
+ullat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+ullon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+urlat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+urlon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lllat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lllon = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lrlat = subwrd(line,2)
+filestat = read(fila)
+line = sublin(filestat,2)
+lrlon = subwrd(line,2)
+
+"run disp_colours colour"
+"sdfopen "args                                        ;* plot SAR data
+#"open "stem".coads.ctl"
+#"sdfopen "stem".sar.cmod5.vector.nc"
+#"sdfopen "stem".sar.wind.nc"
+
+"clear"
+"set mproj scaled"
+"set grads off"
+"set grid off"
+"set xlab off"
+"set ylab off"
+"set digsiz 0.09"
+
+#"set parea 4.7 10.4 0.4 7.6"
+"set parea 0 5 0.4 7.6"
+"set gxout shaded"
+#"d maskout(sigo,land)"
+"run disp_shaded_sar sigo"
+#"clear graphics"
+"run gui_cbarn 1.0 1 10 4.25"
+
+say "printim plot."stem".gif gif white x1100 y850"
+    "printim plot."stem".gif gif white x1100 y850"
+"quit"
+
+"set gxout barb"
+"set cthick 20"
+"set digsiz 0.1"
+"d skip(lats.3,15,15);lons.3"
+
+"set gxout contour"
+"set cthick 15"
+"set clab off"
+"set clevs 0"
+"set ccolor 1"
+"d land"
+
+"set gxout model"
+"set mdlopts dig3"
+"set digsiz 0.22"
+"set ccolor 1"
+"set cthick 100"
+"d uwnd.2;vwnd.2"
+#"set ccolor 0"
+#"set cthick 1"
+#"d uwnd.2;vwnd.2"
+"set gxout contour"
+
+"q gxinfo"
+rec = sublin(result,3)
+lrx = subwrd(rec,4)
+urx = subwrd(rec,4)
+rec = sublin(result,4)
+lry = subwrd(rec,4)
+ury = subwrd(rec,6)
+
+"set strsiz 0.09 0.09"
+"run disp_sar_latlon"
+
+"close 3"
+"close 2"
+"close 1"
+
+"sdfopen slp.2004.nc"                        ;* plot SLP
+"q file"
+ret = sublin(result,5)
+lasttime = subwrd(ret,12)
+index = 1
+while (index < lasttime)
+  "set t "index
+  "run gui_date"
+  if (result = maxdate)
+    maxind = index
+    index = lasttime
+  endif
+  index = index + 1
+endwhile
+
+"set mproj scaled"
+position = "46 300 46 300"
+dellat = 20
+dellon = 15
+
+#"set parea 0.05 4.0 0.4 7.6"
+"set parea 0 0.4 0.4 0.6"
+"set grads off"
+"set grid off"
+"set xlab off"
+"set ylab off"
+"set map 1 1 20"
+"set digsiz 0.09"
+"set gxout shaded"
+"run gui_view_grid "dellat" "dellon" "position
+"run disp_shaded_contoured (slp+slp(t+1))/200 3 1012"
+"set line 1 1 20"
+"run disp_box_points "ullat" "ullon" "urlat" "urlon" "lllat" "lllon" "lrlat" "lrlon
+
+if (ullon < 0)
+  ullon = ullon + 360
+endif
+if (lllon < 0) 
+  lllon = lllon + 360
+endif
+"q w2xy "ullon" "ullat
+ulx = subwrd(result,3)
+uly = subwrd(result,6)
+"q w2xy "lllon" "lllat
+llx = subwrd(result,3)
+lly = subwrd(result,6)
+
+"set parea off"
+"set string 1 c 20"
+"set strsiz 0.23 0.23"
+#"draw string 5.5 8.2 "direction" "beam" "date" "time
+"set line 1 1 20"
+say "draw line "llx" "lly" "lrx" "lry
+    "draw line "llx" "lly" "lrx" "lry
+say "draw line "ulx" "uly" "urx" "ury
+    "draw line "ulx" "uly" "urx" "ury
+
+#"run gui_print plot."stem
+say "printim plot."stem".gif gif white x1100 y850"
+    "printim plot."stem".gif gif white x1100 y850"
+"quit"
