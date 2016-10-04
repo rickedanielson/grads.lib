@@ -129,7 +129,7 @@ while (a < count)                                                 ;# get its res
   if (midlon < 0) ; midlon = midlon + 360.0 ; endif               ;# then set the display script
   say "midlat = "midlat" midlon = "midlon
 
-  displist = "/home/rdanielson/prog/graphics.grads/lib/gui_disp.gs"
+  displist = "/home/rdanielson/prog/graphics.grads/grads.lib/gui_disp.gs"
   outline = ''
   filestat = write(displist,outline)
   message = sublin(filestat,1)

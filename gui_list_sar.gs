@@ -66,8 +66,8 @@ define = result
 * open both display scripts and store some initial display commands
 
 fpz = "xyzzy.forgetit" ; "!echo $HOME > "fpz ; line = read(fpz) ; home = sublin(line,2) ; ret = close(fpz) ; "!rm "fpz
-filenama = home'/prog/graphics.grads/lib/gui_disp.gs'
-filenamb = home'/prog/graphics.grads/lib/gui_dispp.gs'
+filenama = home'/prog/graphics.grads/grads.lib/gui_disp.gs'
+filenamb = home'/prog/graphics.grads/grads.lib/gui_dispp.gs'
 outline = ''
 filestat = write(filenama,outline)
 messaga = sublin(filestat,1)

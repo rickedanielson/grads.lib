@@ -31,7 +31,7 @@ define = result
 * open the display script
 
 fpz = "xyzzy.forgetit" ; "!echo $HOME > "fpz ; line = read(fpz) ; home = sublin(line,2) ; ret = close(fpz) ; "!rm "fpz
-filenama = home'/prog/graphics.grads/lib/gui_disp.gs'
+filenama = home'/prog/graphics.grads/grads.lib/gui_disp.gs'
 outline = ''
 filestat = write(filename,outline)
 message = sublin(filestat,1)

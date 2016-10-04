@@ -1,24 +1,22 @@
-* This script plots lat and lon labels for a
-* satellite acquistion that isn't aligned along
+* This script plots lat and lon labels for
+* a SAR acquistion that isn't aligned along
 * lats and lons.  The script is executed using
 * commands such as
 *
 * "set strsiz 0.10 0.10"
 * "set line 1 1 4"
-* "run disp_sar_latlon 0.05 1 1 0 0"
+* "run disp_sar_latlon"
 *
 * where strsiz controls the label size - RD April 2004.
 
 function latlon(args)
 
-dela   = 1
+dela   = 2
 delta  = subwrd(args,1)
 left   = subwrd(args,2)
 right  = subwrd(args,3)
 bottom = subwrd(args,4)
 top    = subwrd(args,5)
-dellat = subwrd(args,6)
-dellon = subwrd(args,7)
 if (delta  = "") ; delta  = 0.08 ; endif                 ;* length of tick marks
 if (left   = "") ; left   = 1;     endif                 ;* 1 = plot labels along axis
 if (right  = "") ; right  = 1;     endif
@@ -80,7 +78,6 @@ yt = subwrd(line,6)
 
 "set gxout stat"                                         ;* get all possible lat/lon
 "d lats"                                                 ;* labels for this plot
-*say result
 line = sublin(result,3)
 lonmin = subwrd(line,4)
 lonmax = subwrd(line,6)
@@ -92,47 +89,24 @@ latlabmin = subwrd(line,5)
 latlabmax = subwrd(line,6)
 latlabint = subwrd(line,7)
 "d lons"
-*say result
 line = sublin(result,9)
-lonlabmin = subwrd(line,5) ;* if (lonlabmin > 180) ; lonlabmin = lonlabmin - 360 ; endif
-lonlabmax = subwrd(line,6) ;* if (lonlabmax > 180) ; lonlabmax = lonlabmax - 360 ; endif
-lonshift = 0
-if (lonlabmin > 180 & lonlabmax > 180)
-  lonshift  = 1
-  lonlabmin = lonlabmin - 360
-  lonlabmax = lonlabmax - 360
-endif
+lonlabmin = subwrd(line,5)
+lonlabmax = subwrd(line,6)
 lonlabint = subwrd(line,7)
 
-a = 0 ; b = 0                                            ;* and count these labels
+a = 0                                                    ;* and count these labels
 latlabnum = (latlabmax - latlabmin) / latlabint + 0.5
 while (a <= latlabnum)
-  tmpa = latlabmin + a * latlabint
-  tmpb = math_format(  "%f", tmpa)
-  tmpc = math_format("%.0f", tmpa) ; tmpc = math_format("%f", tmpc)
-  tmpd = math_format("%.1f", tmpa) ; tmpd = math_format("%f", tmpd)
-  if tmpb = tmpc | tmpb = tmpd
-    latlab.b = tmpa
-    b = b + 1
-  endif
+  latlab.a = latlabmin + a * latlabint
   a = a + 1
 endwhile
-latlabnum = b
 
-a = 0 ; b = 0
+a = 0
 lonlabnum = (lonlabmax - lonlabmin) / lonlabint + 0.5
 while (a <= lonlabnum)
-  tmpa = lonlabmin + a * lonlabint
-  tmpb = math_format(  "%f", tmpa)
-  tmpc = math_format("%.0f", tmpa)
-  tmpd = math_format("%.1f", tmpa)
-  if tmpb = tmpc | tmpb = tmpd
-    lonlab.b = tmpa
-    b = b + 1
-  endif
+  lonlab.a = lonlabmin + a * lonlabint
   a = a + 1
 endwhile
-lonlabnum = b
 
 "set x "lonmin" "lonmax                                  ;* first compute a tick shift
 "set y "latmin
@@ -164,10 +138,10 @@ if (bottom = 1)
     while (b < lonmax)
       "set x "b
       "d tmp"
-      tmpa = subwrd(result,4) ; if (tmpa > 180 & lonshift = 1) ; tmpa = tmpa - 360 ; endif
+      tmpa = subwrd(result,4)
       "set x "b+1
       "d tmp"
-      tmpb = subwrd(result,4) ; if (tmpb > 180 & lonshift = 1) ; tmpb = tmpb - 360 ; endif
+      tmpb = subwrd(result,4)
       if (lonlab.a >= tmpa & lonlab.a < tmpb)
         index.a = b + (lonlab.a - tmpa) / (tmpb - tmpa)
       endif
@@ -176,14 +150,14 @@ if (bottom = 1)
     if (index.a > lonmin & index.a < lonmax)
       xpos = xl + (xr - xl) * (index.a - lonmin) / (lonmax - lonmin)
       "draw line "xpos" "yb" "xpos+shift" "yb-delta
-      if (lonlab.a > 180) ; lonlab.a = lonlab.a - 360 ; endif
-      if (lonlab.a < 0) ; tmplab = -lonlab.a"W" ; endif ; if (lonlab.a = -180) ; tmplab = -lonlab.a ; endif
-      if (lonlab.a > 0) ; tmplab =  lonlab.a"E" ; endif ; if (lonlab.a =  180) ; tmplab =  lonlab.a ; endif
-      if (lonlab.a = 0) ; tmplab =  lonlab.a    ; endif
-*tmplab =  lonlab.a
+      if (lonlab.a >= 0)
+        tmplab = lonlab.a"E"
+      else
+        tmplab = -lonlab.a"W"
+      endif
       "draw string "xpos" "yb-2*delta" "tmplab
     endif
-    a = a + dellon
+    a = a + dela
   endwhile
 endif
 
@@ -200,10 +174,10 @@ if (top = 1)
     while (b < lonmax)
       "set x "b
       "d tmp"
-      tmpa = subwrd(result,4) ; if (tmpa > 180 & lonshift = 1) ; tmpa = tmpa - 360 ; endif
+      tmpa = subwrd(result,4)
       "set x "b+1
       "d tmp"
-      tmpb = subwrd(result,4) ; if (tmpb > 180 & lonshift = 1) ; tmpb = tmpb - 360 ; endif
+      tmpb = subwrd(result,4)
       if (lonlab.a >= tmpa & lonlab.a < tmpb)
         index.a = b + (lonlab.a - tmpa) / (tmpb - tmpa)
       endif
@@ -212,14 +186,14 @@ if (top = 1)
     if (index.a > lonmin & index.a < lonmax)
       xpos = xl + (xr - xl) * (index.a - lonmin) / (lonmax - lonmin)
       "draw line "xpos" "yt" "xpos-shift" "yt+delta
-      if (lonlab.a > 180) ; lonlab.a = lonlab.a - 360 ; endif
-      if (lonlab.a < 0) ; tmplab = -lonlab.a"W" ; endif ; if (lonlab.a = -180) ; tmplab = -lonlab.a ; endif
-      if (lonlab.a > 0) ; tmplab =  lonlab.a"E" ; endif ; if (lonlab.a =  180) ; tmplab =  lonlab.a ; endif
-      if (lonlab.a = 0) ; tmplab =  lonlab.a    ; endif
-*tmplab =  lonlab.a
+      if (lonlab.a >= 0)
+        tmplab = lonlab.a"E"
+      else
+        tmplab = -lonlab.a"W"
+      endif
       "draw string "xpos" "yt+2*delta" "tmplab
     endif
-    a = a + dellon
+    a = a + dela
   endwhile
 endif
 
@@ -248,13 +222,16 @@ if (left = 1)
     if (index.a > latmin & index.a < latmax)
       ypos = yb + (yt - yb) * (index.a - latmin) / (latmax - latmin)
       "draw line "xl" "ypos" "xl-delta" "ypos-shift
-      if (latlab.a < 0) ; tmplab = -latlab.a"S" ; endif
-      if (latlab.a > 0) ; tmplab =  latlab.a"N" ; endif
-      if (latlab.a = 0) ; tmplab =  latlab.a    ; endif
-*tmplab =  latlab.a
+      if (latlab.a >= 0)
+#        tmplab = latlab.a
+        tmplab = latlab.a"N"
+      else
+        tmplab = -latlab.a"S"
+      endif
+#tmplab = latlab.a
       "draw string "xl-1.25*delta" "ypos-shift" "tmplab
     endif
-    a = a + dellat
+    a = a + dela
   endwhile
 endif
 
@@ -283,13 +260,16 @@ if (right = 1)
     if (index.a > latmin & index.a < latmax)
       ypos = yb + (yt - yb) * (index.a - latmin) / (latmax - latmin)
       "draw line "xr" "ypos" "xr+delta" "ypos+shift
-      if (latlab.a > 0) ; tmplab =  latlab.a"N" ; endif
-      if (latlab.a < 0) ; tmplab = -latlab.a"S" ; endif
-      if (latlab.a = 0) ; tmplab =  latlab.a    ; endif
-*tmplab =  latlab.a
+      if (latlab.a >= 0)
+#        tmplab = latlab.a
+        tmplab = latlab.a"N"
+      else
+        tmplab = -latlab.a"S"
+      endif
+#tmplab = latlab.a
       "draw string "xr+1.25*delta" "ypos+shift" "tmplab
     endif
-    a = a + dellat
+    a = a + dela
   endwhile
 endif
 

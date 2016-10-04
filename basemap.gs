@@ -89,14 +89,14 @@ endif
 * Set the polygon data files
 if (type = 'L' | type = 'l') 
 *  if (lowres); file = '/home/rdanielson/prog/graphics.grads/lib/www.grads/lpoly_US.asc'; endif
-  if (lowres); file = '/home/ricani/prog/graphics.grads/lib/www.grads/lpoly_lowres.asc'; endif
-  if (mres)  ; file = '/home/ricani/prog/graphics.grads/lib/www.grads/lpoly_mres.asc'  ; endif
-  if (hires) ; file = '/home/ricani/prog/graphics.grads/lib/www.grads/lpoly_hires.asc' ; endif
+  if (lowres); file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/lpoly_lowres.asc'; endif
+  if (mres)  ; file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/lpoly_mres.asc'  ; endif
+  if (hires) ; file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/lpoly_hires.asc' ; endif
 endif
 if (type = 'O' | type = 'o') 
-  if (lowres); file = '/home/ricani/prog/graphics.grads/lib/www.grads/opoly_lowres.asc'; endif
-  if (mres)  ; file = '/home/ricani/prog/graphics.grads/lib/www.grads/opoly_mres.asc'  ; endif
-  if (hires) ; file = '/home/ricani/prog/graphics.grads/lib/www.grads/opoly_hires.asc' ; endif
+  if (lowres); file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/opoly_lowres.asc'; endif
+  if (mres)  ; file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/opoly_mres.asc'  ; endif
+  if (hires) ; file = '/home/ricani/prog/graphics.grads/grads.lib/www.grads/opoly_hires.asc' ; endif
 endif
 
 * Make sure there's a plot already drawn

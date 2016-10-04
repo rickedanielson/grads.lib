@@ -23,8 +23,10 @@ namx = "xyzzy"
 
 * and convert to postscript
 
-say "/opt/opengrads/gxeps -c -i "namx" -o "name".ps"
-   "!/opt/opengrads/gxeps -c -i "namx" -o "name".ps"
+#say "/opt/opengrads/gxeps -c -i "namx" -o "name".ps"
+#   "!/opt/opengrads/gxeps -c -i "namx" -o "name".ps"
+say "/home/ricani/prog/graphics.grads/bin.grads-2.0.1.oga.1/gxeps -c -i "namx" -o "name".ps"
+   "!/home/ricani/prog/graphics.grads/bin.grads-2.0.1.oga.1/gxeps -c -i "namx" -o "name".ps"
 #say "~/prog/graphics.grads/bin/gxeps -c -i "namx" -o "name".ps"
 #   "!~/prog/graphics.grads/bin/gxeps -c -i "namx" -o "name".ps"
 say "/bin/rm "namx

@@ -14,7 +14,7 @@ function header(arg)
 *  endif
 *endif
 
-filename = '/home/ricani/prog/graphics.grads/lib/gui_disp.gs'
+filename = '/home/ricani/prog/graphics.grads/grads.lib/gui_disp.gs'
 "set string 1 l 5"
 "set strsiz 0.15 0.15"
 

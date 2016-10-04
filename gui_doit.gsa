@@ -91,7 +91,7 @@ while (a < count)                                                 ;# read the he
   midlon = (ullon + urlon + lllon + lrlon) / 4.0
   if (midlon < 0) ; midlon = midlon + 360.0 ; endif
 
-  displist = "/home/rdanielson/prog/graphics.grads/lib/gui_disp.gs"     ;# then set the display script
+  displist = "/home/rdanielson/prog/graphics.grads/grads.lib/gui_disp.gs"     ;# then set the display script
   outline = ''
   filestat = write(displist,outline)
   message = sublin(filestat,1)

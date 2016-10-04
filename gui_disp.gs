@@ -5,36 +5,30 @@
 "set xlab on"
 "set ylab on"
 "set digsiz 0.09"
-#"set mpdset novascotia"
+"set dignum 2"
+"set mpdset hires"
 "define D2R = 3.141592654 / 180.0"
 "set mpdraw on"
 
-"set x 1 1440"
-"set y 1 720"
-"q dims"
-say result
+#"d ci"
+#"d sst"
+#"d chnk"
+#"d msl"
+#"d tcc"
+#"d u10"
+#"d v10"
+#"d t2m"
+#"d sr"
 
-#"d surface_downwar"
-#"d surface_upward_"
-#"d air_temperature"
-#"d wind_direction"
-"d dew_point_tempe"
-#"d eastward_wind"
-#"d sea_surface_tem"
-#"d northward_wind"
-#"d wind_speed"
-#"d surface_downwar"
-#"d surface_upward_"
-#"d air_surface_spe"
+"set gxout grfill"
+"d swh.2"
+"set gxout grid"
+"d swh.2"
+#"d mwd.2"
+#"d mwp.2"
+
+#"d cenlon"
+#"d cenlat"
+#"d d2r"
 
 "run gui_header"
-
-"set lat -.25"
-"set lon -180"
-"d dew_point_tempe"
-say result
-"q dims"
-say result
-
-*"d dew_point_tempe"
-*say result
